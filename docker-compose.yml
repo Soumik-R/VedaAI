@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo
+    container_name: veda-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis
+    container_name: veda-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: veda-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/veda
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - OPENAI_API_KEY=your_key
+      - GEMINI_API_KEY=AIzaSyASzk4lWSQVNQpkwzY_z8JmK3chlQBZQ7U
+
+  worker:
+    build: ./backend
+    container_name: veda-worker
+    command: npm run worker
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/veda
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - OPENAI_API_KEY=your_key
+      - GEMINI_API_KEY=AIzaSyASzk4lWSQVNQpkwzY_z8JmK3chlQBZQ7U
+
+volumes:
+  mongo-data:
