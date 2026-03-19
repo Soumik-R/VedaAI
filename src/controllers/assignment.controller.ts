@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import Assignment from "../models/assignment.model";
+import { Queue } from "bullmq";
+import { redisConnection } from "../config/redis";
+
+const generateQueue = new Queue("generate-question-paper", { connection: redisConnection });
 
 export const createAssignment = async (req: Request, res: Response) => {
   try {
     const assignment = await Assignment.create({
       ...req.body,
-      status: "pending",
+      status: "generating", // Setting to generating so UI knows it's working
     });
 
-    // TODO: add queue here (Phase 3)
+    await generateQueue.add("generate", { assignmentId: assignment._id });
 
     res.status(201).json({
       success: true,
