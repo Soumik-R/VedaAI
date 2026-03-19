@@ -36,6 +36,7 @@ const worker = new Worker(
       await assignment.save();
 
       console.log("AI generation completed:", assignmentId);
+      return { assignmentId }; // Emit to queue events listener
     } catch (err) {
       console.error("AI Error:", err);
 
