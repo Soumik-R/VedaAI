@@ -1,0 +1,13 @@
+# Ignore environment variables
+.env
+.env.*
+
+# Ignore Node.js
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
