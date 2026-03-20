@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateQuestions = async (prompt: string) => {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: "gemini-1.5-flash", // Correct and verified fast model identifier
     systemInstruction: "You are a strict JSON generator.",
   });
 
@@ -17,6 +17,7 @@ export const generateQuestions = async (prompt: string) => {
     ],
     generationConfig: {
       temperature: 0.7,
+      responseMimeType: "application/json",
     },
   });
 

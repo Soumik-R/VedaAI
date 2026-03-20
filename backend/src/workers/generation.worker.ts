@@ -23,11 +23,20 @@ const worker = new Worker(
       console.log(`Generating questions for assignment: ${assignmentId}`);
       const prompt = buildPrompt(assignment);
 
-      const aiRaw = await generateQuestions(prompt);
+      // Hard timeout for Gemini API (20 seconds)
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("AI Generation Timeout")), 20000)
+      );
 
-      const parsed = parseAIResponse(aiRaw as string);
+      const aiRaw = (await Promise.race([
+        generateQuestions(prompt),
+        timeoutPromise,
+      ])) as string;
+
+      console.log("RAW AI Response received:", aiRaw.substring(0, 100) + "...");
+
+      const parsed = parseAIResponse(aiRaw);
       
-      // Added high-signal improvement validation from user
       if (!parsed.sections) throw new Error("Invalid structure: missing sections array");
 
       assignment.result = parsed;
@@ -37,11 +46,15 @@ const worker = new Worker(
 
       console.log("AI generation completed:", assignmentId);
       return { assignmentId }; // Emit to queue events listener
-    } catch (err) {
-      console.error("AI Error:", err);
+    } catch (err: any) {
+      console.error("AI Error:", err?.message || err);
 
       assignment.status = "pending";
       await assignment.save();
+      
+      // Even if it fails, return the assignment ID so the frontend WebSocket
+      // updates and stops the "Generating..." loading spinner!
+      return { assignmentId, error: true };
     }
   },
   { connection: redisConnection }

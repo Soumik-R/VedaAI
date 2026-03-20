@@ -74,7 +74,7 @@ export default function AssignmentOutput() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
             <div>
               <h1 className="text-3xl font-bold tracking-tight mb-2 text-black dark:text-white">Examination Paper</h1>
-              <p className="text-zinc-500 font-medium">Auto-generated Assessment • {new Date(assignment.dueDate).toLocaleDateString()}</p>
+              <p className="text-zinc-500 font-medium">Auto-generated Assessment • {assignment.dueDate.split("T")[0]}</p>
             </div>
             
             {assignment.status === "generating" && (

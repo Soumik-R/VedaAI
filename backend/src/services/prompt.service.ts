@@ -6,7 +6,7 @@ Details:
 - Number of Questions: ${assignment.numQuestions}
 - Marks per Question: ${assignment.marks}
 - Question Types: ${assignment.questionTypes.join(",")}
-- Instructions: ${assignment.instructions}
+- Instructions: ${(assignment.instructions || "").slice(0, 500)}
 
 Structure:
 - Section A → Easy
