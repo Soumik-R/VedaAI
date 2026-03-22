@@ -60,15 +60,15 @@ export default function CreateAssignment() {
       <div className="absolute top-3/4 -left-20 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-2xl w-full mx-auto relative z-10 p-2 sm:p-0">
-        <header className="mb-12 space-y-4 text-center sm:text-left pt-6 sm:pt-10">
-          <div className="inline-flex items-center gap-3 mb-2 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.02)] backdrop-blur-md">
+        <header className="mb-12 flex flex-col items-center text-center pt-6 sm:pt-10">
+          <div className="inline-flex items-center gap-3 mb-5 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.02)] backdrop-blur-md">
             <div className="h-1.5 w-8 bg-indigo-400 rounded-full shadow-[0_0_8px_theme(colors.indigo.400)]" />
             <span className="text-indigo-300 text-[10px] font-bold tracking-[0.2em] uppercase">Veda AI Engine</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-lg">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-lg mb-4">
             Create Assessment
           </h1>
-          <p className="text-lg text-zinc-400 font-medium pl-1">
+          <p className="text-lg text-zinc-400 font-medium">
             Configure parameters to synthesize an instant, intelligent exam paper.
           </p>
         </header>

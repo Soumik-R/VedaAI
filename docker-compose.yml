@@ -27,7 +27,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/veda
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-your_key}
+
       - GEMINI_API_KEY=${GEMINI_API_KEY}
 
   worker:
@@ -41,7 +41,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/veda
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-your_key}
+
       - GEMINI_API_KEY=${GEMINI_API_KEY}
 
 volumes:
