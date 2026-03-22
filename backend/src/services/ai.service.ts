@@ -1,25 +1,32 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
+import fetch from "node-fetch";
 
 export const generateQuestions = async (prompt: string) => {
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash", // Correct and verified fast model identifier
-    systemInstruction: "You are a strict JSON generator.",
-  });
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is not configured properly in .env!");
+  }
 
-  const response = await model.generateContent({
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: prompt }],
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ],
-    generationConfig: {
-      temperature: 0.7,
-      responseMimeType: "application/json",
-    },
-  });
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+      }),
+    }
+  );
 
-  return response.response.text();
+  const data = await res.json() as any;
+
+  if (data.error) {
+    throw new Error(`Gemini API Error: ${data.error.message}`);
+  }
+
+  return data.candidates[0].content.parts[0].text;
 };

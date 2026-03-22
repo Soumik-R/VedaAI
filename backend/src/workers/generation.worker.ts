@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { Worker } from "bullmq";
 import { redisConnection } from "../config/redis";
 import Assignment from "../models/assignment.model";
@@ -49,9 +52,13 @@ const worker = new Worker(
     } catch (err: any) {
       console.error("AI Error:", err?.message || err);
 
-      assignment.status = "pending";
+      (assignment as any).status = "failed";
+      assignment.result = {
+        sections: [] as any,
+        error: "AI generation failed",
+      };
       await assignment.save();
-      
+
       // Even if it fails, return the assignment ID so the frontend WebSocket
       // updates and stops the "Generating..." loading spinner!
       return { assignmentId, error: true };

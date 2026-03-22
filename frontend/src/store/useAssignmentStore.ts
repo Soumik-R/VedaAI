@@ -5,6 +5,7 @@ export interface Question {
   text: string;
   difficulty: "easy" | "medium" | "hard";
   marks: number;
+  options?: string[];
 }
 
 export interface Section {
@@ -21,7 +22,7 @@ export interface Assignment {
   numQuestions: number;
   marks: number;
   instructions: string;
-  status: "pending" | "generating" | "completed";
+  status: "pending" | "generating" | "completed" | "failed";
   result?: {
     sections: Section[];
   };

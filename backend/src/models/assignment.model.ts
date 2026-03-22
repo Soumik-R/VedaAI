@@ -7,6 +7,7 @@ const QuestionSchema = new mongoose.Schema({
     enum: ["easy", "medium", "hard"],
   },
   marks: Number,
+  options: [String],
 });
 
 const SectionSchema = new mongoose.Schema({
@@ -24,7 +25,7 @@ const AssignmentSchema = new mongoose.Schema(
     instructions: String,
     status: {
       type: String,
-      enum: ["pending", "generating", "completed"],
+      enum: ["pending", "generating", "completed", "failed"],
       default: "pending",
     },
     result: {
